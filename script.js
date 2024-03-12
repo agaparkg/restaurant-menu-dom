@@ -30,6 +30,7 @@ window.filterCategoryData = filterCategoryData;
 
 function filterCategoryData(event) {
   console.log(event.target.innerHTML);
+  //   createMenuData(filteredData)
 }
 
 function createMenuBtns() {
@@ -55,6 +56,8 @@ function createMenuBtns() {
 createMenuBtns();
 
 function createMenuData(menuData) {
+  menuContainer.innerHTML = "";
+
   for (let i = 0; i < menuData.length; i++) {
     const newItem = `<div class="card">
         <div class="card-left">
