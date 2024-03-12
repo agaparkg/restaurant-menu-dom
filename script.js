@@ -26,6 +26,12 @@ function capitalizeName(btnName) {
   return btnName.charAt(0).toUpperCase() + btnName.slice(1); // Apple
 }
 
+window.filterCategoryData = filterCategoryData;
+
+function filterCategoryData(event) {
+  console.log(event.target.innerHTML);
+}
+
 function createMenuBtns() {
   for (let i = 0; i < categories.length; i++) {
     const categoryName = categories[i];
@@ -38,7 +44,7 @@ function createMenuBtns() {
       customClass = "menu-label";
     }
 
-    const btn = `<button onclick="" class="${customClass}">${capitalizeName(
+    const btn = `<button onclick="filterCategoryData(event)" class="${customClass}">${capitalizeName(
       categoryName
     )}</button>`;
 
