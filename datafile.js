@@ -1,3 +1,6 @@
+// ["breakfast", "shakes", ...]
+// ["all", "breakfast", "shakes", ...]
+
 const data = [
   {
     id: 1,
