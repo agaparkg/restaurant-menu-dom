@@ -67,11 +67,13 @@ function createMenuBtns() {
 createMenuBtns();
 
 function createMenuData(menuData) {
+  // menuData = [];
   // [1,2,3]
   menuContainer.innerHTML = "";
 
-  for (let i = 0; i < menuData.length; i++) {
-    const newItem = `<div class="card">
+  if (menuData.length) {
+    for (let i = 0; i < menuData.length; i++) {
+      const newItem = `<div class="card">
         <div class="card-left">
           <img src="${menuData[i].img}" alt="" width="100" />
         </div>
@@ -84,7 +86,10 @@ function createMenuData(menuData) {
         </div>
       </div>`;
 
-    menuContainer.innerHTML += newItem;
+      menuContainer.innerHTML += newItem;
+    }
+  } else {
+    menuContainer.innerHTML = '<p class="no-data">No data found</p>';
   }
 }
 
