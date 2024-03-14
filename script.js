@@ -1,4 +1,9 @@
 import data from "./datafile.js";
+import {
+  getUniqueCategories,
+  getFilteredData,
+  capitalizeName,
+} from "./utils.js";
 
 const menuLabels = document.querySelector(".menu-labels");
 const menuContainer = document.querySelector(".container");
@@ -8,29 +13,28 @@ const search = document.querySelector("#search-input");
 const categories = ["all"].concat(getUniqueCategories(data));
 // categories.unshift("all");
 
-function getUniqueCategories(data) {
-  const array = [];
-
-  for (let i = 0; i < data.length; i++) {
-    if (!array.includes(data[i].category)) {
-      array.push(data[i].category);
-    }
-  }
-
-  return array;
-}
-
-// "apple" => "Apple" ==> charAt(0) + slice(1)
-
-function capitalizeName(btnName) {
-  return btnName.charAt(0).toUpperCase() + btnName.slice(1); // Apple
-}
-
-window.filterCategoryData = filterCategoryData;
+// window.filterCategoryData = filterCategoryData;
 
 function filterCategoryData(event) {
-  console.log(event.target.innerHTML);
-  //   createMenuData(filteredData)
+  const btnName = event.target.innerHTML.toLowerCase(); // All, Breakfast
+
+  let filteredData = [];
+
+  const menuButtons = document.querySelectorAll(".menu-label");
+
+  for (let i = 0; i < menuButtons.length; i++) {
+    menuButtons[i].classList.remove("active-menu-btn");
+  }
+
+  event.target.classList.add("active-menu-btn");
+
+  if (btnName === "all") {
+    filteredData = data;
+  } else {
+    filteredData = getFilteredData(data, btnName);
+  }
+
+  createMenuData(filteredData);
 }
 
 function createMenuBtns() {
@@ -45,17 +49,25 @@ function createMenuBtns() {
       customClass = "menu-label";
     }
 
-    const btn = `<button onclick="filterCategoryData(event)" class="${customClass}">${capitalizeName(
+    const btn = `<button class="${customClass}">${capitalizeName(
+      // const btn = `<button onclick="filterCategoryData(event)" class="${customClass}">${capitalizeName(
       categoryName
-    )}</button>`;
+    )}</button>`; // All, Breakfast
 
     menuLabels.innerHTML += btn;
+  }
+
+  const menuButtons = document.querySelectorAll(".menu-label");
+
+  for (let i = 0; i < menuButtons.length; i++) {
+    menuButtons[i].addEventListener("click", filterCategoryData);
   }
 }
 
 createMenuBtns();
 
 function createMenuData(menuData) {
+  // [1,2,3]
   menuContainer.innerHTML = "";
 
   for (let i = 0; i < menuData.length; i++) {
@@ -76,4 +88,21 @@ function createMenuData(menuData) {
   }
 }
 
-createMenuData(data);
+createMenuData(data); // [10 menu data]
+
+search.addEventListener("keyup", function (event) {
+  // "       mlk      key      " ==> "mlk     key"
+  const value = event.target.value.trim().toLowerCase();
+  let filteredSearchData = [];
+
+  if (value !== "") {
+    for (let item of data) {
+      if (item.title.includes(value) || item.desc.includes(value)) {
+        filteredSearchData.push(item);
+      }
+    }
+    createMenuData(filteredSearchData);
+  } else {
+    createMenuData(data);
+  }
+});
